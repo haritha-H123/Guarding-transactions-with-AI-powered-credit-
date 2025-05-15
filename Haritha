@@ -1,0 +1,65 @@
+Here's a basic Pandas-based Python program simulating AI-powered credit card fraud detection and prevention using a dataset like the Kaggle Credit Card Fraud Detection dataset. It uses pandas for data processing and sklearn for a simple machine learning model.
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Load dataset
+df = pd.read_csv('creditcard.csv')  # Replace with your dataset path
+
+# Display basic info
+print("Dataset Summary:")
+print(df.describe())
+
+# Separate features and target
+X = df.drop('Class', axis=1)  # 'Class' is 1 for fraud, 0 for legit
+y = df['Class']
+
+# Split into train/test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+
+# Train a Random Forest classifier
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_train, y_train)
+
+# Predict on test data
+y_pred = clf.predict(X_test)
+
+# Evaluation
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+# Example of real-time prevention simulation
+def detect_transaction(transaction_data):
+    prediction = clf.predict([transaction_data])
+    return "Fraudulent" if prediction[0] == 1 else "Legitimate"
+
+# Example transaction (random sample from dataset)
+example = X_test.iloc[0].values
+print("\nSimulated Transaction Check:")
+print(detect_transaction(example))
+
+Notes:
+
+You’ll need the creditcard.csv dataset or similar.
+
+Install requirements with: pip install pandas scikit-learn
+
+This is a basic example. A production-grade system would include:
+
+Data normalization
+
+Feature engineering
+
+More advanced models (e.g., XGBoost, deep learning)
+
+Real-time stream processing (e.g., Kafka, Spark)
+
+
+
+Let me know if you'd like the code adapted for deep learning, anomaly detection, or deployment setup.
+
